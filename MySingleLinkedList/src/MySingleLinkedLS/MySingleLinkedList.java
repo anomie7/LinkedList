@@ -4,11 +4,19 @@ public class MySingleLinkedList<T> {
 	public Node<T> head = null;
 	public int size = 0;
 
-	public void firstAdd(T item) {
+	public void addFirst(T item) {
 		Node<T> tmp = new Node<T>(item);
 		tmp.next = head;
 		head = tmp;
 		size++;
+	}
+	
+	public Node<T> getHead() {
+		return head;
+	}
+
+	public int getSize() {
+		return size;
 	}
 
 	public void addAfter(Node<T> before, T item) {
@@ -20,11 +28,17 @@ public class MySingleLinkedList<T> {
 
 	public void addLast(T item) {
 		Node<T> tmp = new Node<T>(item);
+		if(head == null){
+			addFirst(item);
+			return;
+		}
+		
 		Node<T> p = head;
 		while (p.next != null) {
 			p = p.next;
 		}
 		p.next = tmp;
+		size++;
 	}
 
 	public T removeFirst() {
@@ -81,15 +95,15 @@ public class MySingleLinkedList<T> {
 		for (int i = 0; i < idx; i++) {
 			tmp = tmp.next;
 		}
-
 		return tmp.data;
 	}
 
 	public void add(int idx, T item) {
-		if (idx < 0 || idx >= size) {
+		if (idx < 0 || idx > size) {
 			return;
 		} else if (idx == 0) {
-			firstAdd(item);
+			addFirst(item);
+			return;
 		} else {
 			Node<T> before = getNode(idx - 1);
 			addAfter(before, item);
@@ -103,11 +117,13 @@ public class MySingleLinkedList<T> {
 			removeFirst();
 		}
 		Node<T> before = getNode(idx - 1);
+		size--;
 		return removeAfter(before);
 	}
 
 	public T remove(T item) {
 		int idx = IndexOf(item);
+		size--;
 		return remove(idx);
 	}
 }
